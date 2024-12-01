@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.wrapper {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    top: 50%;
+    left: 50%;
+}
+
+.addUser_container {
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+    padding: 2rem;
+    border-radius: 24px;
+    width: 400px;
+    height: 500px;
+}
+
+.wrapper h5 {
+    text-align: center;
+    margin-bottom: 1rem;
+    font-weight: 700;
+    color: #000897;
+    font-size: 1.7rem;
+}
+
+.inputs {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+input {
+    margin-bottom: 0.4rem !important;
+    border-radius: 5px;
+    border: none;
+    border: 1px solid #b8b5b5;
+    padding: 3px 13px;
+}
+
+.address-inputs-a {
+    display: flex;
+    gap: 2rem;
+}
+
+.address-inputs-a input:first-child {
+    width: 100%;
+}
+
+.address-inputs-a input:last-child {
+    width: 100%;
+}
+
+.address-inputs-b {
+    display: flex;
+    margin-top: 1rem;
+    gap: 2rem;
+}
+
+.address-inputs-b input:first-child {
+    width: 100%;
+}
+
+.address-inputs-b input:last-child {
+    width: 100%;
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 3rem;
+    gap: 1rem;
+}
+
+button {
+    border: none;
+    outline: none;
+    padding: 0.3rem 1rem;
+}
+
+.buttons button:first-child {
+    border-radius: 7px;
+    background-color: rgb(255, 104, 104);
+}
+
+.buttons button:last-child {
+    border-radius: 7px;
+    background-color: cyan;
+}
