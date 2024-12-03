@@ -32,8 +32,8 @@ const Content = () => {
                     <Route path='/addUser/edit' element={<Adduser />}>
                         <Route path=":userId" />
                     </Route>
-                    <Route path='/post' element={<Posts />} />
-                    <Route path='/post/add' element={<AddPost />}>
+                    <Route path='/posts' element={<Posts />} />
+                    <Route path='/posts/add' element={<AddPost />}>
                         <Route path=":postId" />
                     </Route>
                     <Route path='/gallery' element={<Gallery />} />

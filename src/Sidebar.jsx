@@ -20,7 +20,7 @@ const Sidebar = () => {
                 </li>
                 <li>
                     <i className='fas fa-notes-medical ms-2'></i>
-                    <NavLink to='/post' className={({ isActive }) => isActive ? 'active-link' : ''}>
+                    <NavLink to='/posts' className={({ isActive }) => isActive ? 'active-link' : ''}>
                         پست ها
                     </NavLink>
                 </li>

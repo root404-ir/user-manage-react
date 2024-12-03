@@ -102,7 +102,7 @@ const Posts = () => {
                                     <span className="border border-2 border-info py-0 px-2 text-black rounded-5">{p.category}</span>
                                 </td>
                                 <td>
-                                    <i className="fas fa-edit text-warning mx-2 pointer" onClick={() => navigate(`/post/add/${p.id}`)}></i>
+                                    <i className="fas fa-edit text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></i>
                                     <i className="fas fa-trash text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></i>
                                 </td>
                             </tr>

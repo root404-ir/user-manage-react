@@ -5,6 +5,8 @@ import styled from "@emotion/styled";
 import soundFile from "../assets/sounds/new-notification-7-210334.mp3"
 import { apAxios } from "../axios";
 import { PostService, UpdatePostService } from "../services/postService";
+import buttonLoadingGif from '../assets/rolling.gif'
+import { useLoading } from "../contexts/loadingContext";
 const AddPost = () => {
 
     const Container = styled.div`
@@ -38,18 +40,27 @@ const AddPost = () => {
     const inputRef = useRef()
     const audioRef = useRef(new Audio(soundFile))
     const [loading, setLoading] = useState(true)
+    const { buttonLoading, startLoading, stopLoading } = useLoading()
     const [postData, setPostData] = useState({
         title: '',
         category: ''
     })
-    const handleAddPost = (e) => {
+    const handleAddPost = async (e) => {
         e.preventDefault()
-        if (!postId) {
-            PostService(postData, setPostData)
-            successSound()
-        } else {
-            successSound()
-            UpdatePostService(postData, postId)
+        startLoading()
+        try {
+            if (!postId) {
+                await PostService(postData, setPostData)
+                successSound()
+                startLoading()
+            } else {
+                await UpdatePostService(postData, postId)
+                successSound()
+                startLoading()
+            }
+            navigate('/posts')
+        } catch {
+
         }
     }
     useEffect(() => {
@@ -103,9 +114,10 @@ const AddPost = () => {
                                 </Select>
                             </Inputs>
                             <div className="d-flex justify-content-end mt-4 gap-3">
-                                <button className="btn btn-danger" onClick={() => navigate('/post')}>بازگشت</button>
-                                <button type="submit" className="btn btn-warning">
+                                <button className="btn btn-danger" onClick={() => navigate('/posts')}>بازگشت</button>
+                                <button type="submit" className="btn btn-warning d-flex align-items-center gap-2" disabled={buttonLoading}>
                                     {postId ? 'ویرایش' : 'ذخیره'}
+                                    {buttonLoading && <img src={buttonLoadingGif} alt="" width={20} />}
                                 </button>
                             </div>
                         </Wrapper>

@@ -4,7 +4,7 @@ import Content from "./content";
 import Sidebar from "./Sidebar";
 import { BrowserRouter } from "react-router-dom";
 import DarkLight from "./DarkMode/dark-light";
-import { LoadingProvider } from "./contexts/loadingContext";
+import PersianDate from "./date/persianDate";
 
 function App() {
     const [activeMenu, setActiveMenu] = useState(false)
@@ -13,6 +13,7 @@ function App() {
             <div className="App">
                 <MainContext.Provider value={{ activeMenu, setActiveMenu }}>
                         <DarkLight />
+                        <PersianDate/>
                         <Content />
                         <Sidebar />
                 </MainContext.Provider>

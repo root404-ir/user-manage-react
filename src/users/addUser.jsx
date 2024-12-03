@@ -3,6 +3,8 @@ import './addUser.css'
 import React, { useEffect, useState } from 'react'
 import { apAxios } from '../axios'
 import { userService, updateUserService } from '../services/userService'
+import buttonLoadingGif from '../assets/rolling.gif'
+import { useLoading } from '../contexts/loadingContext'
 const Adduser = () => {
     const { userId } = useParams()
     const navigate = useNavigate()
@@ -20,13 +22,22 @@ const Adduser = () => {
     })
 
     const [emailError, setEmailError] = useState('')
+    const { buttonLoading, startLoading, stopLoading } = useLoading()
     const [emailValid, setEmailValid] = useState('')
-    const handleAddUser = (e) => {
+    const handleAddUser = async (e) => {
         e.preventDefault()
-        if (!userId) {
-            userService(data, setData)
-        } else {
-            updateUserService(data, userId)
+        startLoading()
+        try {
+            if (!userId) {
+                await userService(data, setData)
+                stopLoading()
+            } else {
+                await updateUserService(data, userId)
+                stopLoading()
+            }
+            navigate('/')
+        } catch {
+            stopLoading()
         }
 
     }
@@ -102,8 +113,9 @@ const Adduser = () => {
                                 </div>
                                 <div className='buttons'>
                                     <button onClick={() => navigate('/')} className='bg-danger text-white pointer'>بازگشت</button>
-                                    <button type={'submit'} className='bg-warning pointer'>
+                                    <button type={'submit'} className='bg-warning pointer d-flex align-items-center-center gap-2' disabled={buttonLoading}>
                                         {userId ? "ویرایش" : "ذخیره"}
+                                        {buttonLoading && <img src={buttonLoadingGif} alt="" width={20} />}
                                     </button>
                                 </div>
                             </div>

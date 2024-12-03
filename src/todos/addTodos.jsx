@@ -4,6 +4,7 @@ import styled from '@emotion/styled'
 import { useEffect, useRef, useState } from "react"
 import { GetIdTaskService, TaskService, UpdateTaskService } from "../services/todosService"
 import { useLoading } from "../contexts/loadingContext"
+import buttonLoadingGif from '../assets/rolling.gif'
 const AddTodos = () => {
     const Container = styled.div`
         display:flex;
@@ -25,11 +26,11 @@ const AddTodos = () => {
     const navigate = useNavigate()
     const inputRef = useRef()
     const [loading, setLoading] = useState(true)
-    const {buttonLoading, startLoading, stopLoading} = useLoading()
+    const { buttonLoading, startLoading, stopLoading } = useLoading()
     const [taskData, setTaskData] = useState({
         title: ''
     })
-    const handleAddTask = (e) => {
+    const handleAddTask = async (e) => {
         e.preventDefault()
         if (!taskData.title.length) {
             Swal.fire({
@@ -37,18 +38,26 @@ const AddTodos = () => {
                 text: "عنوان نباید خالی باشد!",
                 icon: "error",
                 backdrop: `
-                        #d67772
-                        left top
-                        no-repeat
-                    `
+                #d67772
+                left top
+                no-repeat
+                `
             });
             return
         }
-        if (!taskId) {
-            TaskService(taskData, setTaskData)
-        } else {
-            UpdateTaskService(taskData, taskId)
+        startLoading()
+        try {
+            if (!taskId) {
+                await TaskService(taskData, setTaskData)
+            } else {
+                await UpdateTaskService(taskData, taskId)
+            }
+            navigate('/todos')
+            stopLoading()
+        } catch {
+            stopLoading()
         }
+
 
     }
     useEffect(() => {
@@ -78,7 +87,13 @@ const AddTodos = () => {
                             </div>
                             <div className="d-flex justify-content-end mt-4 gap-3">
                                 <button className="btn btn-danger" onClick={() => navigate('/todos')}>بازگشت</button>
-                                <button className="btn btn-warning">{taskId ? 'ویرایش' : 'ذخیره'}</button>
+                                <button
+                                    type="submit"
+                                    disabled={buttonLoading}
+                                    className="btn btn-warning d-flex align-items-center gap-2"
+                                >{taskId ? 'ویرایش' : 'ذخیره'}
+                                    {buttonLoading && <img src={buttonLoadingGif} alt="" width={20} />}
+                                </button>
                             </div>
                         </Wrapper>
                     </form>
