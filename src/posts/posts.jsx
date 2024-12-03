@@ -74,7 +74,7 @@ const Posts = () => {
                 </div>
                 <div>
                     <div className="text-start px-0">
-                        <Link to={'/post/add'} className="btn btn-success">
+                        <Link to={'/posts/add'} className="btn btn-success">
                             <span className="d-flex align-items-center gap-2">
                                 <i className="btn_plus_icon fas fa-plus text-light"></i>
                                 اضافه کردن پست جدید

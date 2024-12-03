@@ -8,7 +8,8 @@ const PersianDate = () => {
             setDate(res.data)
             console.log(res.data)
         })
-    }, [date])
+
+    }, [])
     return (
         <div>
             {date ? (
