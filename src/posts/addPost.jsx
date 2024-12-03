@@ -52,11 +52,11 @@ const AddPost = () => {
             if (!postId) {
                 await PostService(postData, setPostData)
                 successSound()
-                startLoading()
+                stopLoading()
             } else {
                 await UpdatePostService(postData, postId)
                 successSound()
-                startLoading()
+                stopLoading()
             }
             navigate('/posts')
         } catch {

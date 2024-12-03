@@ -3,7 +3,6 @@ import './style.css'
 import { MainContext } from "./contexts/mainContext"
 import { NavLink } from "react-router-dom";
 import avatar from './assets/androgynous-avatar-non-binary-queer-person_prev_ui.png'
-import DarkLight from "./DarkMode/dark-light";
 const Sidebar = () => {
     const { activeMenu, setActiveMenu } = useContext(MainContext)
     return (
