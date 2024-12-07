@@ -2,6 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { apAxiosV2 } from "../axios";
+import { FaEdit } from "react-icons/fa";
+import { IoTrashBin } from "react-icons/io5";
+import { FaPlus } from "react-icons/fa";
+
 import InfoSoundTask from "../assets/sounds/info.mp3"
 import DeleteSoundTask from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
 import TextBg from "../text-bg";
@@ -79,7 +83,7 @@ const Todos = () => {
                     <div className="text-start px-0">
                         <Link to={'/todos/add'} className="btn btn-success">
                             <span className="d-flex align-items-center gap-2">
-                                <i className="btn_plus_icon fas fa-plus text-light"></i>
+                                <FaPlus className="btn_plus_icon text-light" />
                                 اضافه کردن کار جدید
                             </span>
                         </Link>
@@ -106,12 +110,12 @@ const Todos = () => {
                                         {t.isDone ? 'انجام شده' : 'انجام نشده'}
                                     </span></td>
                                     <td>
-                                        <i className={`${t.isDone ? 'fas fa-close text-warning' : 'fas fa-check text-success'} mx-2 pointer`}
+                                        <i
+                                            className={`${t.isDone ? 'fa fa-close text-warning' : 'fa fa-check text-success'} mx-2 pointer`}
                                             title={`${t.isDone ? 'از حالت انجام شده خارج کن' : 'انجام دادم'}`}
-                                            onClick={() => handleDoneTask(t.id)}
-                                        ></i>
-                                        <i className="fas fa-edit text-warning mx-2 pointer" title="ویرایش" onClick={() => navigate(`/todos/add/${t.id}`)}></i>
-                                        <i className="fas fa-trash text-danger mx-2 pointer" title="حذف" onClick={() => handleDeleteTask(t.id)}></i>
+                                            onClick={() => handleDoneTask(t.id)} ></i>
+                                        <FaEdit className=" text-warning mx-2 pointer" title="ویرایش" onClick={() => navigate(`/todos/add/${t.id}`)} />
+                                        <IoTrashBin className="text-danger mx-2 pointer" title="حذف" onClick={() => handleDeleteTask(t.id)} />
                                     </td>
                                 </tr>
                             ))}
@@ -123,8 +127,9 @@ const Todos = () => {
                     <img src="/assets/gif/g0R9.gif" alt="" className="preloader" />
                     <p className="fs-2">در حال بارگزاری داده ها ...</p>
                 </div>
-            )}
-        </div>
+            )
+            }
+        </div >
     )
 }
 export default Todos

@@ -1,13 +1,14 @@
-import { useNavigate, useParams } from 'react-router'
+import {  useParams } from 'react-router'
 import './addUser.css'
 import React, { useEffect, useState } from 'react'
 import { apAxios } from '../axios'
 import { userService, updateUserService } from '../services/userService'
 import buttonLoadingGif from '../assets/rolling.gif'
 import { useLoading } from '../contexts/loadingContext'
-const Adduser = () => {
+import NavigateComponent from './navigate'
+const Adduser = (props) => {
     const { userId } = useParams()
-    const navigate = useNavigate()
+    const navigate = props.navigate
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState({
         name: '',
@@ -126,4 +127,4 @@ const Adduser = () => {
         </div >
     )
 }
-export default Adduser
+export default NavigateComponent(Adduser)

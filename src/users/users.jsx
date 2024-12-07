@@ -1,11 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Swal from 'sweetalert2'
 import axios from "axios";
 import '../style.css'
 import TextBg from "../text-bg";
-const Users = () => {
-    const navigate = useNavigate()
+import NavigateComponent from "./navigate";
+const Users = (props) => {
+    const navigate = props.navigate
     const [user, setUser] = useState([])
     const [mainUsers, setMainUsers] = useState([])
     useEffect(() => {
@@ -117,4 +118,4 @@ const Users = () => {
         </div >
     )
 }
-export default Users
+export default NavigateComponent(Users)  
