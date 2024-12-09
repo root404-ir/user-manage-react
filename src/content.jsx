@@ -12,6 +12,8 @@ import AddPost from "./posts/addPost";
 import AddGallery from "./gallery/addGallery";
 import AddTodos from "./todos/addTodos";
 import { LoadingProvider } from "./contexts/loadingContext";
+import DarkLight from "./DarkMode/dark-light";
+import PersianDate from "./date/persianDate";
 const Content = () => {
     const { activeMenu, setActiveMenu } = useContext(MainContext)
     const handleShowMenu = (event) => {
@@ -24,6 +26,7 @@ const Content = () => {
         }}>
             <i className="menu_button text-align-center fas fa-bars text-dark m-2 pointer" onClick={handleShowMenu}></i>
             <LoadingProvider>
+                <DarkLight />
                 <Routes>
                     <Route path='/' element={<Users />} />
                     <Route path='/addUser' element={<Adduser />}>

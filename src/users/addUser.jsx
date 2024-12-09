@@ -1,4 +1,4 @@
-import {  useParams } from 'react-router'
+import {  useNavigate, useParams } from 'react-router'
 import './addUser.css'
 import React, { useEffect, useState } from 'react'
 import { apAxios } from '../axios'
@@ -8,7 +8,7 @@ import { useLoading } from '../contexts/loadingContext'
 import NavigateComponent from './navigate'
 const Adduser = (props) => {
     const { userId } = useParams()
-    const navigate = props.navigate
+    const navigate = useNavigate()
     const [loading, setLoading] = useState(true)
     const [data, setData] = useState({
         name: '',

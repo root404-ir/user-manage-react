@@ -340,14 +340,14 @@ const AddGallery = ({ addPhoto }) => {
             return;
         }
 
-        if (!isImageUploaded) {
-            Swal.fire({
-                title: "خطا!",
-                text: "لطفا ابتدا تصویر را بارگذاری کنید",
-                icon: "warning"
-            });
-            return;
-        }
+        // if (!isImageUploaded) {
+        //     Swal.fire({
+        //         title: "خطا!",
+        //         text: "لطفا ابتدا تصویر را بارگذاری کنید",
+        //         icon: "warning"
+        //     });
+        //     return;
+        // }
         if (!galleryId) {
             axios.post('https://672fbdd966e42ceaf15e955b.mockapi.io/api/v1/gallery', galleryData).then(res => {
                 Swal.fire({

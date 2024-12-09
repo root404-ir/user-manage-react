@@ -4,6 +4,8 @@ import './gallery.css'
 import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { apAxiosV2 } from "../axios"
+import { FaEdit } from "react-icons/fa";
+import { IoTrashBin } from "react-icons/io5";
 import WarningSound from "../assets/sounds/error-call-to-attention-129258.mp3"
 import DeleteSound from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
 import TextBg from "../text-bg"
@@ -82,9 +84,9 @@ const Gallery = () => {
                 </div>
             </div>
             {gallery.length ? (
-                <table className="table table-hover bg-light shadow overflow-hidden rounded-3 mt-4">
+                <table className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4">
                     <thead>
-                        <tr>
+                        <tr className="table-info">
                             <td>#</td>
                             <td>عنوان</td>
                             <td>عکس</td>
@@ -92,7 +94,7 @@ const Gallery = () => {
                             <td>عملیات</td>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody className="table-group-divider">
                         {gallery.map(g => (
                             <tr key={g.id} className="td_gallery">
                                 <td>{g.id}</td>
@@ -106,8 +108,8 @@ const Gallery = () => {
                                     </a>
                                 </td>
                                 <td>
-                                    <i className="fas fa-edit text-warning mx-2 pointer" onClick={() => navigate(`add/${g.id}`)}></i>
-                                    <i className="fas fa-trash text-danger mx-2 pointer" onClick={() => handleDeleteGallery(g.id)}></i>
+                                    <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`add/${g.id}`)}></FaEdit>
+                                    <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeleteGallery(g.id)}></IoTrashBin>
                                 </td>
                             </tr>
                         ))}

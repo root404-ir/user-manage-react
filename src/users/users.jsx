@@ -1,14 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import Swal from 'sweetalert2'
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../style.css'
 import TextBg from "../text-bg";
-import NavigateComponent from "./navigate";
+import { FaEdit } from "react-icons/fa";
+import { IoTrashBin } from "react-icons/io5";
+import Salert from "../hoc/SAlert";
 const Users = (props) => {
-    const navigate = props.navigate
+    const navigate = useNavigate()
     const [user, setUser] = useState([])
     const [mainUsers, setMainUsers] = useState([])
+    const { Confirm, Alert } = props
     useEffect(() => {
         axios.get('https://6720dd3598bbb4d93ca666e2.mockapi.io/api/v1/users').then(res => {
             setUser(res.data)
@@ -18,37 +20,19 @@ const Users = (props) => {
         })
     }, [])
 
-    const handleDelete = (itemName, itemId) => {
-        Swal.fire({
-            title: "حذف رکورد",
-            text: `آیا از حذف  ${itemName} اطمینان دارید؟`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonColor: "#3085d6",
-            cancelButtonColor: "#d33",
-            confirmButtonText: "آره پاکش کن",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                axios.delete(`https://6720dd3598bbb4d93ca666e2.mockapi.io/api/v1/users/${itemId}`).then(res => {
-                    if (res.status === 200) {
-                        let newUsers = user.filter(u => u.id !== itemId)
-                        setUser(newUsers)
-                        Swal.fire({
-                            title: "موفقیت آمیز!",
-                            text: "آیتم انتخابی شما با موفقیت حذف شد",
-                            icon: "success"
-                        });
-                    }
-                }).catch(error => {
-                    console.error("خطا در حذف:", error);
-                    Swal.fire({
-                        title: "خطا!",
-                        text: "مشکلی در حذف داده پیش آمد",
-                        icon: "error"
-                    })
-                })
-            }
-        });
+    const handleDelete = async (itemId) => {
+        if (await Confirm(`آیا از حذف  ${itemId} اطمینان دارید؟`)) {
+            axios.delete(`https://6720dd3598bbb4d93ca666e2.mockapi.io/users/${itemId}`).then(res => {
+                if (res.status === 200) {
+                    let newUsers = user.filter(u => u.id !== itemId)
+                    setUser(newUsers)
+                    Alert("آیتم انتخابی شما با موفقیت حذف شد", "success")
+                }
+            }).catch(error => {
+                console.error("خطا در حذف:", error);
+                Alert("عملیات با خطا مواجه شد", "error")
+            })
+        }
     }
     const handleSearchName = (e) => {
         setUser(mainUsers.filter(u => u.name.includes(e.target.value)))
@@ -78,9 +62,9 @@ const Users = (props) => {
             </div>
             <div className="row container-fluid my-2 mb-4 justify-content-center w-100 mx-0">
                 {user.length ? (
-                    <table className="table table-hover bg-light shadow overflow-hidden rounded-3">
+                    <table className="table table-striped bg-light shadow overflow-hidden rounded-3">
                         <thead>
-                            <tr>
+                            <tr className="table-info">
                                 <td>#</td>
                                 <td>نام و نام خانوادگی</td>
                                 <td>نام کاربری</td>
@@ -88,22 +72,24 @@ const Users = (props) => {
                                 <td>عملیات</td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {user.map(u => (
+
                                 <tr key={u.id}>
                                     <td>{u.id}</td>
                                     <td>{u.name}</td>
                                     <td>{u.username}</td>
                                     <td>{u.email}</td>
                                     <td>
-                                        <i className="fas fa-edit text-warning mx-2 pointer"
+                                        <FaEdit className="text-warning mx-2 pointer"
                                             onClick={() => navigate(`/addUser/edit/${u.id}`)}
-                                        ></i>
+                                        ></FaEdit>
 
-                                        <i className="fas fa-trash text-danger mx-2 pointer"
+                                        <IoTrashBin className="text-danger mx-2 pointer"
                                             onClick={() => handleDelete(u.name, u.id)}
-                                        ></i>
+                                        ></IoTrashBin>
                                     </td>
+
                                 </tr>
                             ))}
                         </tbody>
@@ -118,4 +104,5 @@ const Users = (props) => {
         </div >
     )
 }
-export default NavigateComponent(Users)  
+export default Salert(Users)
+

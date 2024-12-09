@@ -12,10 +12,9 @@ function App() {
         <BrowserRouter>
             <div className="App">
                 <MainContext.Provider value={{ activeMenu, setActiveMenu }}>
-                        <DarkLight />
-                        <PersianDate/>
-                        <Content />
-                        <Sidebar />
+                    <PersianDate />
+                    <Content />
+                    <Sidebar />
                 </MainContext.Provider>
             </div>
         </BrowserRouter>

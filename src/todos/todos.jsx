@@ -92,16 +92,16 @@ const Todos = () => {
             </div>
             {todos.length ? (
                 <div>
-                    <table className="table shadow overflow-hidden bg-light rounded-3 mt-4">
+                    <table className="table table-striped shadow overflow-hidden bg-light rounded-3 mt-4">
                         <thead>
-                            <tr>
+                            <tr className="table-info">
                                 <td>#</td>
                                 <td>عنوان</td>
                                 <td>وضعیت</td>
                                 <td>عملیات</td>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody className="table-group-divider">
                             {todos.map(t => (
                                 <tr key={t.id}>
                                     <td>{t.id}</td>
