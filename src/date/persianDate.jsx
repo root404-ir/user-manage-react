@@ -1,6 +1,5 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
-
 const PersianDate = () => {
     const [date, setDate] = useState(null)
     useEffect(() => {
@@ -13,7 +12,7 @@ const PersianDate = () => {
     return (
         <div>
             {date ? (
-                <div className='d-flex justify-content-center gap-2'>
+                <div className='date text_shdow d-flex justify-content-center gap-2'>
                     <span>تاریخ امروز : </span>
                     <span>{date.date?.full?.official?.iso?.fa}</span>
                 </div>

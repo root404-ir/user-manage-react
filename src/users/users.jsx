@@ -1,11 +1,11 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../style.css'
 import TextBg from "../text-bg";
 import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
-import Salert from "../hoc/SAlert";
+import Salert from "../hoc/WhithSAlert";
 const Users = (props) => {
     const navigate = useNavigate()
     const [user, setUser] = useState([])

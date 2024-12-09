@@ -3,7 +3,6 @@ import { MainContext } from "./contexts/mainContext";
 import Content from "./content";
 import Sidebar from "./Sidebar";
 import { BrowserRouter } from "react-router-dom";
-import DarkLight from "./DarkMode/dark-light";
 import PersianDate from "./date/persianDate";
 
 function App() {
