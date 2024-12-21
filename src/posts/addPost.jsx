@@ -7,6 +7,7 @@ import { apAxios } from "../axios";
 import { PostService, UpdatePostService } from "../services/postService";
 import buttonLoadingGif from '../assets/rolling.gif'
 import { useLoading } from "../contexts/loadingContext";
+import Swal from "sweetalert2";
 const AddPost = () => {
 
     const Container = styled.div`
@@ -43,10 +44,23 @@ const AddPost = () => {
     const { buttonLoading, startLoading, stopLoading } = useLoading()
     const [postData, setPostData] = useState({
         title: '',
-        category: ''
+        category: 'react'
     })
     const handleAddPost = async (e) => {
         e.preventDefault()
+        if (!postData.title.length ) {
+            Swal.fire({
+                title: "خطا!",
+                text: "عنوان نباید خالی باشد!",
+                icon: "error",
+                backdrop: `
+                #d67772
+                left top
+                no-repeat
+                `
+            });
+            return
+        }
         startLoading()
         try {
             if (!postId) {
