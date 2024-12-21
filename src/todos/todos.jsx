@@ -8,13 +8,16 @@ import { FaPlus } from "react-icons/fa";
 
 import InfoSoundTask from "../assets/sounds/info.mp3"
 import DeleteSoundTask from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
-import TextBg from "../text-bg";
-const Todos = () => {
+import WithGroupAction from "../hoc/withGroupActions";
+import { MdOutlineAutoFixHigh } from "react-icons/md";
+const Todos = (props) => {
     const [todos, setTodos] = useState([])
     const [mainTodos, setMainTodos] = useState([])
     const navigate = useNavigate()
     const DeleteSoundRef = useRef(new Audio(DeleteSoundTask))
     const InfoSoundRef = useRef(new Audio(InfoSoundTask))
+    const [selectedItems, setSelectedItems] = useState([])
+    const [operation, setOperation] = useState('')
     const DeleteSound = () => {
         DeleteSoundRef.current.play()
     }
@@ -27,6 +30,54 @@ const Todos = () => {
             setMainTodos(res.data)
         })
     }, [])
+    const handleSelectItems = (id) => {
+        setSelectedItems(prev =>
+            prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+        )
+    }
+
+    const handleGroupAction = () => {
+        if (operation === 'delete' && selectedItems.length) {
+            Swal.fire({
+                title: "حذف گروهی",
+                text: `آیا از حذف این ${selectedItems.length} آیتم اطمینان دارید؟`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "آره پاکش کن",
+            }).then(result => {
+                if (todos.length === 1) {
+                    Swal.fire({
+                        title: "",
+                        text: "حداقل باید یک آیتم باقی بماند",
+                        icon: "info"
+                    });
+                }
+                if (result.isConfirmed && todos.length > 1) {
+                    const deletePromise = selectedItems.map(id => apAxiosV2.delete(`/tasks/${id}`))
+                    Promise.all(deletePromise)
+                        .then(() => {
+                            setTodos(prevData =>
+                                prevData.filter(item => !selectedItems.includes(item.id))
+                            )
+                            setSelectedItems([])
+                            Swal.fire({
+                                title: "موفقیت آمیز!",
+                                text: "آیتم‌های انتخابی با موفقیت حذف شدند",
+                                icon: "success",
+                            }).catch(() => {
+                                Swal.fire({
+                                    title: "خطا!",
+                                    text: "مشکلی در حذف داده‌ها پیش آمد",
+                                    icon: "error",
+                                })
+                            })
+                        })
+                }
+            })
+        }
+    }
     const handleDoneTask = (taskId) => {
         const index = todos.findIndex(t => t.id === taskId)
         let newTaskItem = [...todos]
@@ -73,7 +124,6 @@ const Todos = () => {
         <div className='mt-5 container-fluid p-4'>
             <div className="d-flex justify-content-center">
                 <h4 className='user-manaege-header-text d-inline-block fs-2 fw-bold'>مدیریت کار ها</h4>
-                <TextBg />
             </div>
             <div className=' my-4 mx-0 d-flex container-fluid justify-content-between align-items-center'>
                 <div className="form-group p-0 d-flex gap-3">
@@ -90,11 +140,26 @@ const Todos = () => {
                     </div>
                 </div>
             </div>
+            <div className="d-flex justify-content-between my-4">
+                <select className="form-select w-auto" value={operation} onChange={(e) => setOperation(e.target.value)}>
+                    <option value="">انتخاب عملیات</option>
+                    <option value="delete">حذف</option>
+                </select>
+                <button className="btn btn-danger d-flex align-items-center gap-1"
+                    onClick={() => handleGroupAction('delete')}
+                >
+                    <MdOutlineAutoFixHigh />
+                    انجام عملیات
+                </button>
+            </div>
             {todos.length ? (
                 <div>
                     <table className="table table-striped shadow overflow-hidden bg-light rounded-3 mt-4">
                         <thead>
                             <tr className="table-info">
+                                <td>
+                                    <input type="checkbox" />
+                                </td>
                                 <td>#</td>
                                 <td>عنوان</td>
                                 <td>وضعیت</td>
@@ -104,6 +169,12 @@ const Todos = () => {
                         <tbody className="table-group-divider">
                             {todos.map(t => (
                                 <tr key={t.id}>
+                                    <td>
+                                        <input type="checkbox"
+                                            checked={selectedItems.includes(t.id)}
+                                            onChange={() => handleSelectItems(t.id)}
+                                        />
+                                    </td>
                                     <td>{t.id}</td>
                                     <td>{t.title}</td>
                                     <td><span className={`${t.isDone ? 'bg-success' : 'bg-danger'} py-0 px-2 text-white rounded-5`}>
@@ -132,4 +203,4 @@ const Todos = () => {
         </div >
     )
 }
-export default Todos
+export default WithGroupAction(Todos)

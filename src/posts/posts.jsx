@@ -7,16 +7,16 @@ import { IoTrashBin } from "react-icons/io5";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import soundFile from "../assets/sounds/info.mp3"
 import DeleteSound from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
-import WithGroupAction from "../hoc/withGroupActions";
 
-const Posts = (props) => {
+const Posts = () => {
     const navigate = useNavigate()
     const [posts, setPosts] = useState([])
     const audioRef = useRef(new Audio(soundFile))
     const deleteSoundRef = useRef(new Audio(DeleteSound))
     const [mainPosts, setMainPosts] = useState([])
-    const { selectedItems, onSelectedItems, onGroupAction } = props
     const [operation, setOperation] = useState('')
+    const [selectedItems, setSelectedItems] = useState([])
+
     const infoSound = () => {
         audioRef.current.play()
     }
@@ -29,6 +29,59 @@ const Posts = (props) => {
             setMainPosts(res.data)
         })
     }, [])
+
+
+    const handleSelectItems = (id) => {
+        setSelectedItems(prev =>
+            prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
+        )
+    }
+
+    const handleGroupAction = () => {
+        if (operation === "delete" && selectedItems.length) {
+            Swal.fire({
+                title: "حذف گروهی",
+                text: `آیا از حذف این ${selectedItems.length} آیتم اطمینان دارید؟`,
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "آره پاکش کن",
+            }).then(result => {
+                if (posts.length === 1) {
+                    Swal.fire({
+                        title: "",
+                        text: "حداقل باید یک آیتم باقی بماند",
+                        icon: "info"
+                    });
+                }
+                if (result.isConfirmed && posts.length > 1) {
+                    const deletePromise = selectedItems.map(id => apAxios.delete(`/posts/${id}`))
+                    Promise.all(deletePromise)
+                        .then(() => {
+                            setPosts(prevData =>
+                                prevData.filter(item => !selectedItems.includes(item.id))
+                            )
+                            setSelectedItems([])
+                            Swal.fire({
+                                title: "موفقیت آمیز!",
+                                text: "آیتم‌های انتخابی با موفقیت حذف شدند",
+                                icon: "success",
+                            })
+                        }).catch(() => {
+                            Swal.fire({
+                                title: "خطا!",
+                                text: "مشکلی در حذف داده‌ها پیش آمد",
+                                icon: "error",
+                            })
+                        })
+                }
+            })
+        }
+    }
+
+
+
     const handleSearchPosts = (e) => {
         setPosts(mainPosts.filter(p => p.title.includes(e.target.value)))
     }
@@ -99,58 +152,63 @@ const Posts = (props) => {
                     <option value="">انتخاب عملیات</option>
                     <option value="delete">حذف</option>
                 </select>
-                <button className="btn btn-danger d-flex align-items-center gap-1" onClick={() => onGroupAction("delete", selectedItems, setPosts)}
-                    disabled={!selectedItems.length}
+                <button className="btn btn-danger d-flex align-items-center gap-1" onClick={()=>handleGroupAction('delete')}
+                disabled={!selectedItems.length}
                 >
-                    <MdOutlineAutoFixHigh />
-                    انجام عملیات
-                </button>
-            </div>
+                <MdOutlineAutoFixHigh />
+                انجام عملیات
+            </button>
+        </div>
 
-            {posts.length ? (
-                <table className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4">
-                    <thead>
-                        <tr className="table-info">
+            {
+        posts.length ? (
+            <table className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4">
+                <thead>
+                    <tr className="table-info">
+                        <td>
+                            <input type="checkbox"
+                                onChange={(e) => setSelectedItems(e.target.value ? posts.map(p => p.id) : [])}
+                                checked={selectedItems.length === posts.length}
+                            />
+                        </td>
+                        <td>#</td>
+                        <td>موضوع</td>
+                        <td>دسته بندی</td>
+                        <td>عملیات</td>
+                    </tr>
+                </thead>
+                <tbody className="table-group-divider">
+                    {posts.map(p => (
+                        <tr key={p.id}>
                             <td>
                                 <input type="checkbox"
+                                    checked={selectedItems.includes(p.id)}
+                                    onChange={() => handleSelectItems(p.id)}
                                 />
                             </td>
-                            <td>#</td>
-                            <td>موضوع</td>
-                            <td>دسته بندی</td>
-                            <td>عملیات</td>
+                            <td>{p.id}</td>
+                            <td>{p.title}</td>
+                            <td>
+                                <span className="  py-0 px-2 shadow-sm border-bottom border-secondary border-4 text-black rounded-2">{p.category}</span>
+                            </td>
+                            <td>
+                                <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
+                                <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></IoTrashBin>
+                            </td>
                         </tr>
-                    </thead>
-                    <tbody className="table-group-divider">
-                        {posts.map(p => (
-                            <tr key={p.id}>
-                                <td>
-                                    <input type="checkbox"
-                                        checked={selectedItems.includes(p.id)}
-                                        onChange={() => onSelectedItems(p.id)}
-                                    />
-                                </td>
-                                <td>{p.id}</td>
-                                <td>{p.title}</td>
-                                <td>
-                                    <span className="  py-0 px-2 shadow-sm border-bottom border-secondary border-4 text-black rounded-2">{p.category}</span>
-                                </td>
-                                <td>
-                                    <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
-                                    <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></IoTrashBin>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            ) : (
-                <div className="d-flex justify-content-center flex-column align-items-center gap-5 h-50">
-                    <img src="/assets/gif/g0R9.gif" alt="" className="preloader" />
-                    <p className="fs-2">در حال بارگزاری داده ها ...</p>
-                </div>
-            )}
+                    ))}
+                </tbody>
+            </table>
+
+        ) : (
+        <div className="d-flex justify-content-center flex-column align-items-center gap-5 h-50">
+            <img src="/assets/gif/g0R9.gif" alt="" className="preloader" />
+            <p className="fs-2">در حال بارگزاری داده ها ...</p>
+        </div>
+    )
+    }
 
         </div >
     )
 }
-export default WithGroupAction(Posts)
+export default Posts
