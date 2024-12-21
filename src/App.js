@@ -4,16 +4,20 @@ import Content from "./content";
 import Sidebar from "./Sidebar";
 import { BrowserRouter } from "react-router-dom";
 import PersianDate from "./date/persianDate";
+import { SidebarProvider } from "./contexts/sidebarContext";
 
 function App() {
     const [activeMenu, setActiveMenu] = useState(false)
+
     return (
         <BrowserRouter>
             <div className="App">
                 <MainContext.Provider value={{ activeMenu, setActiveMenu }}>
                     <PersianDate />
-                    <Content />
-                    <Sidebar />
+                    <SidebarProvider>
+                        <Content />
+                        <Sidebar />
+                    </SidebarProvider>
                 </MainContext.Provider>
             </div>
         </BrowserRouter>
