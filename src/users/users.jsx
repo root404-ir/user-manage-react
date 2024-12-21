@@ -2,15 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import '../style.css'
-import TextBg from "../text-bg";
 import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
-import Salert from "../hoc/WhithSAlert";
-const Users = (props) => {
+import { Alert, Confirm } from "../utils/Salert";
+const Users = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState([])
     const [mainUsers, setMainUsers] = useState([])
-    const { Confirm, Alert } = props
     useEffect(() => {
         axios.get('https://6720dd3598bbb4d93ca666e2.mockapi.io/api/v1/users').then(res => {
             setUser(res.data)
@@ -19,19 +17,20 @@ const Users = (props) => {
             console.log(err);
         })
     }, [])
-
-    const handleDelete = async (itemId) => {
-        if (await Confirm(`آیا از حذف  ${itemId} اطمینان دارید؟`)) {
-            axios.delete(`https://6720dd3598bbb4d93ca666e2.mockapi.io/users/${itemId}`).then(res => {
+    const handleDelete = async (itemName,itemId) => {
+        const isConfirmed = await Confirm(`آیا از حذف  ${itemName} اطمینان دارید؟`)
+        if (isConfirmed) {
+            try {
+                const res = await axios.delete(`https://6720dd3598bbb4d93ca666e2.mockapi.io/users/${itemId}`)
                 if (res.status === 200) {
                     let newUsers = user.filter(u => u.id !== itemId)
                     setUser(newUsers)
-                    Alert("آیتم انتخابی شما با موفقیت حذف شد", "success")
+                    Alert('موفقیت آمیز', "آیتم انتخابی شما با موفقیت حذف شد", "success")
                 }
-            }).catch(error => {
+            } catch (error) {
                 console.error("خطا در حذف:", error);
-                Alert("عملیات با خطا مواجه شد", "error")
-            })
+                Alert('خطا', "عملیات با خطا مواجه شد", "error")
+            }
         }
     }
     const handleSearchName = (e) => {
@@ -43,7 +42,6 @@ const Users = (props) => {
     return (
         <div className="mt-5 p-4 container-fluid">
             <h4 className="text-center fs-2 fw-bold">مدیریت کاربران</h4>
-            <TextBg />
             <div className=' my-4 mx-0 d-flex container-fluid justify-content-between align-items-center'>
                 <div className="form-group p-0 d-flex gap-3">
                     <input type="text" className="form-control shadow" placeholder="جستجو بر اساس نام" onChange={handleSearchName} />
@@ -104,5 +102,5 @@ const Users = (props) => {
         </div >
     )
 }
-export default Salert(Users)
+export default Users
 
