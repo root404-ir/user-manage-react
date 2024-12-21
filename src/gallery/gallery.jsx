@@ -8,7 +8,6 @@ import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
 import WarningSound from "../assets/sounds/error-call-to-attention-129258.mp3"
 import DeleteSound from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
-import TextBg from "../text-bg"
 const Gallery = () => {
 
     const navigate = useNavigate()
@@ -67,7 +66,6 @@ const Gallery = () => {
     return (
         <div className='mt-5 container-fluid p-4'>
             <h4 className='text-center fs-2 fw-bold'>مدیریت گالری</h4>
-            <TextBg />
             <div className=' my-4 mx-0 d-flex container-fluid justify-content-between align-items-center'>
                 <div className="form-group p-0 d-flex gap-3">
                     <input type="text" className="form-control shadow" placeholder="جستجو" onChange={handleSearchGallery} />
