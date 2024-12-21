@@ -27,6 +27,7 @@ body {
 a:hover {
     cursor: url('./assets/icons8-hand-cursor-48\ \(1\).png'), auto;
 }
+
 ul {
     list-style: none;
     line-height: 30px;
@@ -34,13 +35,13 @@ ul {
 
 a {
     text-decoration: none !important;
-    display: none;
     transition: all 100ms;
 }
 
 i:not(.btn_plus_icon) {
     color: #ffffff;
-    margin-right: 40%;
+    margin-right: 18%;
+    margin-top: 1.2rem;
     transition: all 100ms;
 }
 
@@ -63,32 +64,24 @@ h4 {
 
 .sidebar_section {
     position: fixed;
-    width: 80px;
+    width: 150px;
     right: 0;
     top: 0;
     height: 100vh;
     display: block;
-    transition: all 200ms ease;
+    transition: all 300ms ease-in-out;
     z-index: 999;
 }
-
-.sidebar_section:hover {
-    width: 250px;
+.close .sidebar_section
+{
+    /* right: -300px; */
+    transform: translateX(300px);
 }
 
-.sidebar_section:hover ul li a {
-    display: inline;
-}
-
-.sidebar_section:hover ul li i {
-    margin-right: 0;
-}
 
 .sidebar_section::after {
     content: "";
     position: absolute;
-    /* background-image: url('./assets/depositphotos_662664732-stock-illustration-modern-dark-green-abstract-geometric.jpg');
-     */
     background-image: url('./assets/background-sidebar.jpg');
     background-repeat: no-repeat;
     background-size: cover;
@@ -99,6 +92,32 @@ h4 {
     width: 100%;
     height: 100%;
     z-index: -999;
+}
+
+.sidebar-close-toggle {
+    position: absolute;
+    top: 0.5rem;
+    left: 0;
+    font-size: 1.5rem;
+    z-index: 9999;
+}
+
+.test {
+    background-image: url('./assets/background-sidebar.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 150px;
+    height: 40px;
+    z-index: 99999;
+    position: absolute;
+    inset: 0;
+    text-align: left;
+    border-radius: 7px 0 0 7px;
+    padding: 0 10px;
+}
+
+.test span:last-child {
+    cursor: pointer;
 }
 
 .sidebar_avatar {
@@ -121,18 +140,15 @@ h4 {
     color: #fff !important;
 }
 
-.sidebar_list li:not(.sidebar_avatar):hover {
-    padding: 0.3rem 1rem;
-    background: #ebe6e681;
-}
 
 .content_section {
     position: fixed;
-    width: calc(100% - 80px);
+    width: calc(100% - 150px);
     left: 0;
     top: 0;
     height: 100vh;
     overflow: auto;
+    transition: all 300ms ease;
 }
 
 .menu_button {
