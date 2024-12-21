@@ -13,15 +13,16 @@ import AddGallery from "./gallery/addGallery";
 import AddTodos from "./todos/addTodos";
 import { LoadingProvider } from "./contexts/loadingContext";
 import DarkLight from "./DarkMode/dark-light";
-import PersianDate from "./date/persianDate";
+import { useSidebar } from "./contexts/sidebarContext";
 const Content = () => {
     const { activeMenu, setActiveMenu } = useContext(MainContext)
+    const { SideClose, isSideClose } = useSidebar()
     const handleShowMenu = (event) => {
         event.stopPropagation()
         setActiveMenu(!activeMenu)
     }
     return (
-        <div className="content_section" onClick={() => {
+        <div className={`content_section ${isSideClose ? 'w-100' : ''}`} onClick={() => {
             setActiveMenu(false)
         }}>
             <i className="menu_button text-align-center fas fa-bars text-dark m-2 pointer" onClick={handleShowMenu}></i>
@@ -50,7 +51,7 @@ const Content = () => {
                     <Route path='*' element={<ErrPage />} />
                 </Routes>
             </LoadingProvider>
-        </div>
+        </div >
     )
 }
 export default Content
