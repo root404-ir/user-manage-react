@@ -5,12 +5,10 @@ import { apAxiosV2 } from "../axios";
 import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
 import { FaPlus } from "react-icons/fa";
-
 import InfoSoundTask from "../assets/sounds/info.mp3"
 import DeleteSoundTask from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
-import WithGroupAction from "../hoc/withGroupActions";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
-const Todos = (props) => {
+const Todos = () => {
     const [todos, setTodos] = useState([])
     const [mainTodos, setMainTodos] = useState([])
     const navigate = useNavigate()
@@ -203,4 +201,4 @@ const Todos = (props) => {
         </div >
     )
 }
-export default WithGroupAction(Todos)
+export default Todos
