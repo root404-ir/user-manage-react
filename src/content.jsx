@@ -14,6 +14,7 @@ import AddTodos from "./todos/addTodos";
 import { LoadingProvider } from "./contexts/loadingContext";
 import DarkLight from "./DarkMode/dark-light";
 import { useSidebar } from "./contexts/sidebarContext";
+import AddComment from "./posts/addComment";
 const Content = () => {
     const { activeMenu, setActiveMenu } = useContext(MainContext)
     const { SideClose, isSideClose } = useSidebar()
@@ -38,6 +39,9 @@ const Content = () => {
                     </Route>
                     <Route path='/posts' element={<Posts />} />
                     <Route path='/posts/add' element={<AddPost />}>
+                        <Route path=":postId" />
+                    </Route>
+                    <Route path="/posts/addComment" element={<AddComment />}>
                         <Route path=":postId" />
                     </Route>
                     <Route path='/gallery' element={<Gallery />} />
