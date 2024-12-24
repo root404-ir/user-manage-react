@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { apAxios } from "../axios"
-import { FaEdit, FaEye } from "react-icons/fa";
+import { FaEdit, FaEye, FaCommentDots } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
@@ -235,6 +235,7 @@ const Posts = () => {
                                         <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
                                         <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></IoTrashBin>
                                         <FaEye title="نمایش کامنت ها" className="text-info mx-2 pointer" onClick={() => handleOpenComments(p.id)} />
+                                        <FaCommentDots title="اضافه کردن کامنت" className="text-secodary mx-2 pointer" onClick={()=>navigate(`/posts/addComment/${p.id}`)}/>
                                     </td>
                                 </tr>
                             ))}
