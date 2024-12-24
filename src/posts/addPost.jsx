@@ -7,7 +7,10 @@ import { apAxios } from "../axios";
 import { PostService, UpdatePostService } from "../services/postService";
 import buttonLoadingGif from '../assets/rolling.gif'
 import { useLoading } from "../contexts/loadingContext";
+import ReactQuill from "react-quill";
+import 'react-quill/dist/quill.snow.css';
 import Swal from "sweetalert2";
+import { htmlToText } from "html-to-text";
 const AddPost = () => {
 
     const Container = styled.div`
@@ -39,16 +42,18 @@ const AddPost = () => {
     const navigate = useNavigate()
     const { postId } = useParams()
     const inputRef = useRef()
+    const textAreaRef = useRef()
     const audioRef = useRef(new Audio(soundFile))
     const [loading, setLoading] = useState(true)
     const { buttonLoading, startLoading, stopLoading } = useLoading()
     const [postData, setPostData] = useState({
         title: '',
+        text: '',
         category: 'react'
     })
     const handleAddPost = async (e) => {
         e.preventDefault()
-        if (!postData.title.length ) {
+        if (!postData.title.length) {
             Swal.fire({
                 title: "خطا!",
                 text: "عنوان نباید خالی باشد!",
@@ -83,6 +88,7 @@ const AddPost = () => {
             apAxios.get(`/posts/${postId}`).then(res => {
                 setPostData({
                     title: res.data.title,
+                    text: res.data.text,
                     category: res.data.category
                 })
                 setLoading(false)
@@ -98,6 +104,11 @@ const AddPost = () => {
             inputRef.current.focus()
         }
     }, [postData.title])
+    useEffect(() => {
+        if (textAreaRef.current) {
+            textAreaRef.current.focus()
+        }
+    }, [postData.text])
     const successSound = () => {
         audioRef.current.play()
     }
@@ -116,6 +127,8 @@ const AddPost = () => {
                             <Inputs>
                                 <label>موضوع : </label>
                                 <input type="text" ref={inputRef} value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
+                                <label>متن پست : </label>
+                                <textarea value={postData.text} ref={textAreaRef} onChange={(e) => setPostData({ ...postData, text: e.target.value })}></textarea>
                                 <label>دسته بندی</label>
                                 <Select value={postData.category} onChange={(e) => setPostData({ ...postData, category: e.target.value })}>
                                     <option>react</option>
