@@ -3,7 +3,7 @@ import './style.css'
 import { MainContext } from "./contexts/mainContext"
 import { NavLink } from "react-router-dom";
 import { BsToggle2Off, BsToggle2On } from "react-icons/bs";
-import avatar from './assets/androgynous-avatar-non-binary-queer-person_prev_ui.png'
+import avatar from './assets/icons8-eingekreist-benutzer-männlich-hauttyp-5-48.png'
 import { useSidebar } from "./contexts/sidebarContext";
 const Sidebar = () => {
     const { activeMenu, setActiveMenu } = useContext(MainContext)
