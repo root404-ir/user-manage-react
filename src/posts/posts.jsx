@@ -2,19 +2,20 @@ import { useEffect, useRef, useState } from "react"
 import { Link, useNavigate } from "react-router-dom"
 import Swal from "sweetalert2"
 import { apAxios } from "../axios"
-import { FaEdit } from "react-icons/fa";
+import { FaEdit, FaEye } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import soundFile from "../assets/sounds/info.mp3"
 import DeleteSound from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
-
 const Posts = () => {
     const navigate = useNavigate()
     const [posts, setPosts] = useState([])
-    const audioRef = useRef(new Audio(soundFile))
-    const deleteSoundRef = useRef(new Audio(DeleteSound))
     const [mainPosts, setMainPosts] = useState([])
     const [operation, setOperation] = useState('')
+    const [isCommentOpen, setIsCommentOpen] = useState(null)
+    const audioRef = useRef(new Audio(soundFile))
+    const deleteSoundRef = useRef(new Audio(DeleteSound))
     const [selectedItems, setSelectedItems] = useState([])
 
     const infoSound = () => {
@@ -80,7 +81,10 @@ const Posts = () => {
         }
     }
 
+    const handleOpenComments = (commentId) => {
 
+        setIsCommentOpen(commentId)
+    }
 
     const handleSearchPosts = (e) => {
         setPosts(mainPosts.filter(p => p.title.includes(e.target.value)))
@@ -130,6 +134,40 @@ const Posts = () => {
     }
     return (
         <div className='mt-5 container-fluid p-4'>
+            {isCommentOpen && (
+                <div>
+                    {posts.map(r => (
+                        r.id === isCommentOpen && (<div style={{
+                            width: '500px',
+                            height: '300px',
+                            borderRadius: '10px',
+                            background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(104, 179, 251, 1) 100%)',
+                            position: "fixed",
+                            zIndex: 1000,
+                            transition: "all 3s ease",
+                            left: '50%',
+                            top: '50%',
+                            transform: 'translate(-50%,-50%)',
+                        }}>
+
+                            <IoIosCloseCircleOutline className="close-modal-icon me-2 mt-2 fs-3"
+                                style={{ color: '#000', cursor: 'pointer' }}
+                                onMouseEnter={(e) => e.target.style.color = 'red'}
+                                onMouseLeave={(e) => e.target.style.color = '#000'}
+                                onClick={() => setIsCommentOpen(false)}
+                            />
+                            <div className="d-flex flex-column gap-5 align-items-center">
+                                <h3>کامنت مربوط به این پست</h3>
+                                <span>
+                                    کامنت مربوط به شناسه {r.id} :
+                                </span>
+                                <span>{r.comment}</span>
+                            </div>
+
+                        </div>)
+                    ))}
+                </div>
+            )}
             <h4 className='text-center fs-2 fw-bold'>مدیریت پست ها</h4>
             <div className=' my-4 mx-0 p-0 d-flex container-fluid justify-content-between align-items-center'>
                 <div className="form-group p-0 d-flex gap-3">
@@ -152,61 +190,64 @@ const Posts = () => {
                     <option value="">انتخاب عملیات</option>
                     <option value="delete">حذف</option>
                 </select>
-                <button className="btn btn-danger d-flex align-items-center gap-1" onClick={()=>handleGroupAction('delete')}
-                disabled={!selectedItems.length}
+                <button className="btn btn-danger d-flex align-items-center gap-1" onClick={() => handleGroupAction('delete')}
+                    disabled={!selectedItems.length}
                 >
-                <MdOutlineAutoFixHigh />
-                انجام عملیات
-            </button>
-        </div>
+                    <MdOutlineAutoFixHigh />
+                    انجام عملیات
+                </button>
+            </div>
 
             {
-        posts.length ? (
-            <table className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4">
-                <thead>
-                    <tr className="table-info">
-                        <td>
-                            <input type="checkbox"
-                                onChange={(e) => setSelectedItems(e.target.value ? posts.map(p => p.id) : [])}
-                                checked={selectedItems.length === posts.length}
-                            />
-                        </td>
-                        <td>#</td>
-                        <td>موضوع</td>
-                        <td>دسته بندی</td>
-                        <td>عملیات</td>
-                    </tr>
-                </thead>
-                <tbody className="table-group-divider">
-                    {posts.map(p => (
-                        <tr key={p.id}>
-                            <td>
-                                <input type="checkbox"
-                                    checked={selectedItems.includes(p.id)}
-                                    onChange={() => handleSelectItems(p.id)}
-                                />
-                            </td>
-                            <td>{p.id}</td>
-                            <td>{p.title}</td>
-                            <td>
-                                <span className="  py-0 px-2 shadow-sm border-bottom border-secondary border-4 text-black rounded-2">{p.category}</span>
-                            </td>
-                            <td>
-                                <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
-                                <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></IoTrashBin>
-                            </td>
-                        </tr>
-                    ))}
-                </tbody>
-            </table>
+                posts.length ? (
+                    <table className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4">
+                        <thead>
+                            <tr className="table-info">
+                                <td>
+                                    <input type="checkbox"
+                                        onChange={(e) => setSelectedItems(e.target.value ? posts.map(p => p.id) : [])}
+                                        checked={selectedItems.length === posts.length}
+                                    />
+                                </td>
+                                <td>#</td>
+                                <td>موضوع</td>
+                                <td>متن پست</td>
+                                <td>دسته بندی</td>
+                                <td>عملیات</td>
+                            </tr>
+                        </thead>
+                        <tbody className="table-group-divider">
+                            {posts.map(p => (
+                                <tr key={p.id}>
+                                    <td>
+                                        <input type="checkbox"
+                                            checked={selectedItems.includes(p.id)}
+                                            onChange={() => handleSelectItems(p.id)}
+                                        />
+                                    </td>
+                                    <td>{p.id}</td>
+                                    <td>{p.title}</td>
+                                    <td>{p.text}</td>
+                                    <td>
+                                        <span className="  py-0 px-2 shadow-sm border-bottom border-secondary border-4 text-black rounded-2">{p.category}</span>
+                                    </td>
+                                    <td>
+                                        <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
+                                        <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></IoTrashBin>
+                                        <FaEye title="نمایش کامنت ها" className="text-info mx-2 pointer" onClick={() => handleOpenComments(p.id)} />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
 
-        ) : (
-        <div className="d-flex justify-content-center flex-column align-items-center gap-5 h-50">
-            <img src="/assets/gif/g0R9.gif" alt="" className="preloader" />
-            <p className="fs-2">در حال بارگزاری داده ها ...</p>
-        </div>
-    )
-    }
+                ) : (
+                    <div className="d-flex justify-content-center flex-column align-items-center gap-5 h-50">
+                        <img src="/assets/gif/g0R9.gif" alt="" className="preloader" />
+                        <p className="fs-2">در حال بارگزاری داده ها ...</p>
+                    </div>
+                )
+            }
 
         </div >
     )
