@@ -8,6 +8,7 @@ import { FaPlus } from "react-icons/fa";
 import InfoSoundTask from "../assets/sounds/info.mp3"
 import DeleteSoundTask from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
 import { MdOutlineAutoFixHigh } from "react-icons/md";
+import gsap from "gsap";
 const Todos = () => {
     const [todos, setTodos] = useState([])
     const [mainTodos, setMainTodos] = useState([])
@@ -26,6 +27,7 @@ const Todos = () => {
         apAxiosV2.get('/tasks',).then(res => {
             setTodos(res.data)
             setMainTodos(res.data)
+            gsap.to('#todo_table', { opacity: 1 })
         })
     }, [])
     const handleSelectItems = (id) => {
@@ -152,7 +154,7 @@ const Todos = () => {
             </div>
             {todos.length ? (
                 <div>
-                    <table className="table table-striped shadow overflow-hidden bg-light rounded-3 mt-4">
+                    <table id="todo_table" className="table table-striped shadow overflow-hidden bg-light rounded-3 mt-4" style={{ opacity: 0 }}>
                         <thead>
                             <tr className="table-info">
                                 <td>

@@ -9,6 +9,7 @@ import { MdOutlineAutoFixHigh } from "react-icons/md";
 import soundFile from "../assets/sounds/info.mp3"
 import DeleteSound from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
 import axios from "axios";
+import gsap from "gsap";
 const Posts = () => {
     const navigate = useNavigate()
     const [posts, setPosts] = useState([])
@@ -30,6 +31,7 @@ const Posts = () => {
         apAxios.get('/api/v1/posts').then(res => {
             setPosts(res.data)
             setMainPosts(res.data)
+            gsap.to('#post_table', { opacity: 1 })
         })
     }, [])
 
@@ -143,7 +145,7 @@ const Posts = () => {
             {isCommentOpen && (
                 <div>
                     {comments.map(c => (
-                        c.id === isCommentOpen && (<div style={{
+                        c.id === isCommentOpen && (<div id="comment_modal" style={{
                             width: '500px',
                             height: '300px',
                             borderRadius: '10px',
@@ -205,7 +207,7 @@ const Posts = () => {
 
             {
                 posts.length ? (
-                    <table className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4">
+                    <table id="post_table" className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4" style={{ opacity: 0 }}>
                         <thead>
                             <tr className="table-info">
                                 <td>
@@ -237,10 +239,10 @@ const Posts = () => {
                                         <span className="  py-0 px-2 shadow-sm border-bottom border-secondary border-4 text-black rounded-2">{p.category}</span>
                                     </td>
                                     <td>
-                                        <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
-                                        <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></IoTrashBin>
-                                        <FaEye title="نمایش کامنت ها" className="text-info mx-2 pointer" onClick={() => handleOpenComments(p.id)} />
-                                        <FaCommentDots title="اضافه کردن کامنت" className="mx-2 pointer" style={{color:'darkmagenta'}} onClick={() => navigate(`/posts/addComment/${p.id}`)} />
+                                        <FaEdit className="text-warning mx-2" style={{ cursor: 'pointer' }} onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
+                                        <IoTrashBin className="text-danger mx-2" style={{ cursor: 'pointer' }} onClick={() => handleDeletePost(p.id)}></IoTrashBin>
+                                        <FaEye title="نمایش کامنت ها" className="text-info mx-2" style={{ cursor: 'pointer' }} onClick={() => handleOpenComments(p.id)} />
+                                        <FaCommentDots title="اضافه کردن کامنت" className="mx-2" style={{ cursor: 'pointer', color: 'darkmagenta' }} onClick={() => navigate(`/posts/addComment/${p.id}`)} />
                                     </td>
                                 </tr>
                             ))}

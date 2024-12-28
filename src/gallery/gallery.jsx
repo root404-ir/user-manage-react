@@ -8,6 +8,7 @@ import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
 import WarningSound from "../assets/sounds/error-call-to-attention-129258.mp3"
 import DeleteSound from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
+import gsap from "gsap"
 const Gallery = () => {
 
     const navigate = useNavigate()
@@ -25,6 +26,7 @@ const Gallery = () => {
         apAxiosV2.get('/gallery').then(res => {
             setGallery(res.data)
             setMainGallery(res.data)
+            gsap.to('#gallery_table', { opacity: 1 })
         })
     }, [])
     const handleSearchGallery = (e) => {
@@ -82,7 +84,7 @@ const Gallery = () => {
                 </div>
             </div>
             {gallery.length ? (
-                <table className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4">
+                <table id="gallery_table" className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4" style={{ opacity: 0 }}>
                     <thead>
                         <tr className="table-info">
                             <td>#</td>

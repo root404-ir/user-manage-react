@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import gsap from "gsap";
 import '../style.css'
 import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
@@ -13,6 +14,7 @@ const Users = () => {
         axios.get('https://6720dd3598bbb4d93ca666e2.mockapi.io/api/v1/users').then(res => {
             setUser(res.data)
             setMainUsers(res.data)
+            gsap.to('#user_table', { opacity: 1 })
         }).catch(err => {
             console.log(err);
         })
@@ -60,7 +62,7 @@ const Users = () => {
             </div>
             <div className="row container-fluid my-2 mb-4 justify-content-center w-100 mx-0">
                 {user.length ? (
-                    <table className="table table-striped bg-light shadow overflow-hidden rounded-3">
+                    <table id="user_table" className="table table-striped bg-light shadow overflow-hidden rounded-3" style={{ opacity: 0 }}>
                         <thead>
                             <tr className="table-info">
                                 <td>#</td>
