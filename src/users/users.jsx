@@ -17,7 +17,7 @@ const Users = () => {
             console.log(err);
         })
     }, [])
-    const handleDelete = async (itemName,itemId) => {
+    const handleDelete = async (itemName, itemId) => {
         const isConfirmed = await Confirm(`آیا از حذف  ${itemName} اطمینان دارید؟`)
         if (isConfirmed) {
             try {

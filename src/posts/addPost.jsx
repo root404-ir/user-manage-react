@@ -7,10 +7,8 @@ import { apAxios } from "../axios";
 import { PostService, UpdatePostService } from "../services/postService";
 import buttonLoadingGif from '../assets/rolling.gif'
 import { useLoading } from "../contexts/loadingContext";
-import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import Swal from "sweetalert2";
-import { htmlToText } from "html-to-text";
 const AddPost = () => {
 
     const Container = styled.div`

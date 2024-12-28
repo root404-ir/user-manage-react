@@ -8,12 +8,14 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import soundFile from "../assets/sounds/info.mp3"
 import DeleteSound from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
+import axios from "axios";
 const Posts = () => {
     const navigate = useNavigate()
     const [posts, setPosts] = useState([])
     const [mainPosts, setMainPosts] = useState([])
     const [operation, setOperation] = useState('')
     const [isCommentOpen, setIsCommentOpen] = useState(null)
+    const [comments, setComments] = useState([])
     const audioRef = useRef(new Audio(soundFile))
     const deleteSoundRef = useRef(new Audio(DeleteSound))
     const [selectedItems, setSelectedItems] = useState([])
@@ -31,6 +33,11 @@ const Posts = () => {
         })
     }, [])
 
+    useEffect(() => {
+        axios.get('https://676b005fbc36a202bb83dff7.mockapi.io/comments').then(res => {
+            setComments(res.data)
+        })
+    })
 
     const handleSelectItems = (id) => {
         setSelectedItems(prev =>
@@ -82,7 +89,6 @@ const Posts = () => {
     }
 
     const handleOpenComments = (commentId) => {
-
         setIsCommentOpen(commentId)
     }
 
@@ -136,12 +142,12 @@ const Posts = () => {
         <div className='mt-5 container-fluid p-4'>
             {isCommentOpen && (
                 <div>
-                    {posts.map(r => (
-                        r.id === isCommentOpen && (<div style={{
+                    {comments.map(c => (
+                        c.id === isCommentOpen && (<div style={{
                             width: '500px',
                             height: '300px',
                             borderRadius: '10px',
-                            background: 'linear-gradient(90deg, rgba(255, 255, 255, 1) 0%, rgba(104, 179, 251, 1) 100%)',
+                            background: 'linear-gradient(90deg, rgba(0,255,218,1) 0%, rgba(0,135,235,1) 100%)',
                             position: "fixed",
                             zIndex: 1000,
                             transition: "all 3s ease",
@@ -159,11 +165,10 @@ const Posts = () => {
                             <div className="d-flex flex-column gap-5 align-items-center">
                                 <h3>کامنت مربوط به این پست</h3>
                                 <span>
-                                    کامنت مربوط به شناسه {r.id} :
+                                    کامنت مربوط به شناسه {c.id} :
                                 </span>
-                                <span>{r.comment}</span>
+                                <span>{c.comment}</span>
                             </div>
-
                         </div>)
                     ))}
                 </div>
@@ -235,7 +240,7 @@ const Posts = () => {
                                         <FaEdit className="text-warning mx-2 pointer" onClick={() => navigate(`/posts/add/${p.id}`)}></FaEdit>
                                         <IoTrashBin className="text-danger mx-2 pointer" onClick={() => handleDeletePost(p.id)}></IoTrashBin>
                                         <FaEye title="نمایش کامنت ها" className="text-info mx-2 pointer" onClick={() => handleOpenComments(p.id)} />
-                                        <FaCommentDots title="اضافه کردن کامنت" className="text-secodary mx-2 pointer" onClick={()=>navigate(`/posts/addComment/${p.id}`)}/>
+                                        <FaCommentDots title="اضافه کردن کامنت" className="mx-2 pointer" style={{color:'darkmagenta'}} onClick={() => navigate(`/posts/addComment/${p.id}`)} />
                                     </td>
                                 </tr>
                             ))}
