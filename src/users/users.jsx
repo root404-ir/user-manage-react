@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import gsap from "gsap";
 import '../style.css'
+import './titleAnimate.css'
 import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
 import { Alert, Confirm } from "../utils/Salert";
@@ -43,7 +44,7 @@ const Users = () => {
     }
     return (
         <div className="mt-5 p-4 container-fluid">
-            <h4 className="text-center fs-2 fw-bold">مدیریت کاربران</h4>
+            <h4 className="text-center fs-2 fw-bold" data-text='مدیریت کاربران'>مدیریت کاربران</h4>
             <div className=' my-4 mx-0 d-flex container-fluid justify-content-between align-items-center'>
                 <div className="form-group p-0 d-flex gap-3">
                     <input type="text" className="form-control shadow" placeholder="جستجو بر اساس نام" onChange={handleSearchName} />
