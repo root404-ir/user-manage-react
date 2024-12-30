@@ -139,7 +139,7 @@ const AddPost = () => {
                                     </div>
                                     <div className="d-flex flex-column w-50">
                                         <label>شناسه کاربر</label>
-                                        <input type="text" className="form-control" value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })} />
+                                        <input type="text" disabled className="form-control" value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })} />
                                     </div>
                                 </div>
                                 <div className="d-flex gap-5">
