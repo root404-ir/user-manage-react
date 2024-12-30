@@ -217,6 +217,7 @@ const Posts = () => {
                                     />
                                 </td>
                                 <td>#</td>
+                                <td>شناسه کاربر</td>
                                 <td>موضوع</td>
                                 <td>متن پست</td>
                                 <td>دسته بندی</td>
@@ -233,6 +234,7 @@ const Posts = () => {
                                         />
                                     </td>
                                     <td>{p.id}</td>
+                                    <td>{p.userId}</td>
                                     <td>{p.title}</td>
                                     <td>{p.text}</td>
                                     <td>
