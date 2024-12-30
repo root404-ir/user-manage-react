@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import ReactQuill from "react-quill";
 import { useNavigate, useParams } from "react-router";
 import axios from "axios";
 import Swal from "sweetalert2";
@@ -44,7 +43,6 @@ const AddComment = () => {
             <h4 className="text-center fs-2 fw-bold">اضافه کردن کامنت</h4>
             <form onSubmit={handleCommentSubmit}>
                 <div className="bg-white rounded-2 p-4">
-                    {/* ReactQuill برای ورودی کامنت */}
                     <textarea
                         value={commentData.comment}
                         onChange={(e) => setCommentData({ ...commentData, comment: e.target.value })}
