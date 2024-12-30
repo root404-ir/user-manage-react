@@ -9,7 +9,6 @@ import buttonLoadingGif from '../assets/rolling.gif'
 import { useLoading } from "../contexts/loadingContext";
 import Swal from "sweetalert2";
 import axios from "axios";
-import Posts from "./posts";
 const AddPost = () => {
 
     const Container = styled.div`
@@ -20,13 +19,15 @@ const AddPost = () => {
         transform: translate(-50%, -50%);
         top: 50%;
         left: 50%;
+        width:800px;
         box-shadow:0 0 15px #000;
         border-radius:1rem;
     `
     const Wrapper = styled.div`
         background-color:#fff;
-        padding:3rem;
+        padding:2rem;
         border-radius:1rem;
+        width:800px;
     `
     const Inputs = styled.div`
         display:flex;
@@ -38,6 +39,7 @@ const AddPost = () => {
         outline:none;
         border:2px solid #dc3545;
     `
+
     const navigate = useNavigate()
     const { postId } = useParams()
     const inputRef = useRef()
@@ -125,29 +127,41 @@ const AddPost = () => {
                     <form onSubmit={handleAddPost}>
                         <Wrapper>
                             <Inputs>
-                                <label>کاربر : </label>
-                                <select value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })}>
-                                    <option value="">کاربر مورد نظر را وارد کنید</option>
-                                    {users.map(u => (
-                                        <option key={u.id} value={u.id}>{u.name}</option>
-                                    ))}
-                                </select>
-                                <label>شناسه کاربر</label>
-                                <input type="text" className="form-control" value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })} />
-                                <label>موضوع : </label>
-                                <input type="text" ref={inputRef} value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
+                                <div className="d-flex gap-5">
+                                    <div className="d-flex flex-column w-50">
+                                        <label>کاربر : </label>
+                                        <select className="form-select" value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })}>
+                                            <option value="">کاربر مورد نظر را وارد کنید</option>
+                                            {users.map(user => (
+                                                <option key={user.id} value={user.id}>{user.name}</option>
+                                            ))}
+                                        </select>
+                                    </div>
+                                    <div className="d-flex flex-column w-50">
+                                        <label>شناسه کاربر</label>
+                                        <input type="text" className="form-control" value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })} />
+                                    </div>
+                                </div>
+                                <div className="d-flex gap-5">
+                                    <div className="d-flex flex-column w-50">
+                                        <label>موضوع : </label>
+                                        <input type="text" className="form-control" ref={inputRef} value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
+                                    </div>
+                                    <div className="d-flex flex-column w-50">
+                                        <label>دسته بندی</label>
+                                        <Select value={postData.category} onChange={(e) => setPostData({ ...postData, category: e.target.value })}>
+                                            <option>react</option>
+                                            <option>javascript</option>
+                                            <option>css</option>
+                                            <option>html</option>
+                                            <option>bootstrap</option>
+                                            <option>git</option>
+                                            <option>tailwindcss</option>
+                                        </Select>
+                                    </div>
+                                </div>
                                 <label>متن پست : </label>
-                                <textarea value={postData.text} ref={textAreaRef} onChange={(e) => setPostData({ ...postData, text: e.target.value })}></textarea>
-                                <label>دسته بندی</label>
-                                <Select value={postData.category} onChange={(e) => setPostData({ ...postData, category: e.target.value })}>
-                                    <option>react</option>
-                                    <option>javascript</option>
-                                    <option>css</option>
-                                    <option>html</option>
-                                    <option>bootstrap</option>
-                                    <option>git</option>
-                                    <option>tailwindcss</option>
-                                </Select>
+                                <textarea rows={5} className="form-control" value={postData.text} ref={textAreaRef} onChange={(e) => setPostData({ ...postData, text: e.target.value })}></textarea>
                             </Inputs>
                             <div className="d-flex justify-content-end mt-4 gap-3">
                                 <button className="btn btn-danger" onClick={() => navigate('/posts')}>بازگشت</button>
