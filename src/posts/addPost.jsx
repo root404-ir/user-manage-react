@@ -9,6 +9,8 @@ import buttonLoadingGif from '../assets/rolling.gif'
 import { useLoading } from "../contexts/loadingContext";
 import 'react-quill/dist/quill.snow.css';
 import Swal from "sweetalert2";
+import axios from "axios";
+import Posts from "./posts";
 const AddPost = () => {
 
     const Container = styled.div`
@@ -44,7 +46,9 @@ const AddPost = () => {
     const audioRef = useRef(new Audio(soundFile))
     const [loading, setLoading] = useState(true)
     const { buttonLoading, startLoading, stopLoading } = useLoading()
+    const [users, setUsers] = useState([])
     const [postData, setPostData] = useState({
+        userId: '',
         title: '',
         text: '',
         category: 'react'
@@ -81,14 +85,13 @@ const AddPost = () => {
         }
     }
     useEffect(() => {
+        axios.get('https://6720dd3598bbb4d93ca666e2.mockapi.io/users').then(res => {
+            setUsers(res.data)
+        })
         if (postId) {
             const loadingTimer = setTimeout(() => setLoading(true), 500)
             apAxios.get(`/posts/${postId}`).then(res => {
-                setPostData({
-                    title: res.data.title,
-                    text: res.data.text,
-                    category: res.data.category
-                })
+                setPostData(res.data)
                 setLoading(false)
             }).finally(() => {
                 clearTimeout(loadingTimer)
@@ -123,6 +126,15 @@ const AddPost = () => {
                     <form onSubmit={handleAddPost}>
                         <Wrapper>
                             <Inputs>
+                                <label>کاربر : </label>
+                                <select value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })}>
+                                    <option value="">کاربر مورد نظر را وارد کنید</option>
+                                    {users.map(u => (
+                                        <option key={u.id} value={u.id}>{u.name}</option>
+                                    ))}
+                                </select>
+                                <label>شناسه کاربر</label>
+                                <input type="text" className="form-control" value={postData.userId} onChange={(e) => setPostData({ ...postData, userId: e.target.value })} />
                                 <label>موضوع : </label>
                                 <input type="text" ref={inputRef} value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
                                 <label>متن پست : </label>

@@ -1,4 +1,4 @@
-import {  useNavigate, useParams } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import './addUser.css'
 import React, { useEffect, useState } from 'react'
 import { apAxios } from '../axios'
