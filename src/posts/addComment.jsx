@@ -26,7 +26,7 @@ const AddComment = () => {
                     text: 'کامنت شما با موفقیت اضافه شد',
                     icon: 'success',
                 });
-
+                navigate('/posts')
                 setCommentData({ comment: '' });
             })
             .catch((err) => {
