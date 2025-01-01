@@ -15,7 +15,10 @@ const Users = () => {
         axios.get('https://6720dd3598bbb4d93ca666e2.mockapi.io/api/v1/users').then(res => {
             setUser(res.data)
             setMainUsers(res.data)
-            gsap.to('#user_table', { opacity: 1 })
+            gsap.timeline()
+                .to('#table-user', { x: 0 })
+                .from('#table-content', { opacity: 0 }, "+=0.4")
+
         }).catch(err => {
             console.log(err);
         })
@@ -55,7 +58,7 @@ const Users = () => {
                         <Link to={'/addUser'} className="btn btn-success">
                             <span className="d-flex align-items-center gap-2">
                                 <i className="btn_plus_icon fas fa-plus text-light"></i>
-                                اضافه کردن کاربر جدید
+                                <span className="text-add">اضافه کردن کاربر جدید</span>
                             </span>
                         </Link>
                     </div>
@@ -63,7 +66,7 @@ const Users = () => {
             </div>
             <div className="row container-fluid my-2 mb-4 justify-content-center w-100 mx-0">
                 {user.length ? (
-                    <table id="user_table" className="table table-striped bg-light shadow overflow-hidden rounded-3" style={{ opacity: 0 }}>
+                    <table id="table-user" className="table table-striped bg-light shadow overflow-hidden rounded-3" style={{ transform: 'translateX(4500px)' }}>
                         <thead>
                             <tr className="table-info">
                                 <td>#</td>
@@ -73,9 +76,8 @@ const Users = () => {
                                 <td>عملیات</td>
                             </tr>
                         </thead>
-                        <tbody className="table-group-divider">
+                        <tbody id="table-content" className="table-group-divider">
                             {user.map(u => (
-
                                 <tr key={u.id}>
                                     <td>{u.id}</td>
                                     <td>{u.name}</td>

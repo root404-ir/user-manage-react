@@ -27,7 +27,9 @@ const Todos = () => {
         apAxiosV2.get('/tasks',).then(res => {
             setTodos(res.data)
             setMainTodos(res.data)
-            gsap.to('#todo_table', { opacity: 1 })
+            gsap.timeline()
+                .to('#todo_table', { x: 0 })
+                .from('#table-content', { opacity: 0 }, "+=0.4")
         })
     }, [])
     const handleSelectItems = (id) => {
@@ -134,7 +136,7 @@ const Todos = () => {
                         <Link to={'/todos/add'} className="btn btn-success">
                             <span className="d-flex align-items-center gap-2">
                                 <FaPlus className="btn_plus_icon text-light" />
-                                اضافه کردن کار جدید
+                                <span className="text-add">اضافه کردن کار جدید</span>
                             </span>
                         </Link>
                     </div>
@@ -154,7 +156,7 @@ const Todos = () => {
             </div>
             {todos.length ? (
                 <div>
-                    <table id="todo_table" className="table table-striped shadow overflow-hidden bg-light rounded-3 mt-4" style={{ opacity: 0 }}>
+                    <table id="todo_table" className="table table-striped shadow overflow-hidden bg-light rounded-3 mt-4" style={{ transform: 'translateX(4500px)' }}>
                         <thead>
                             <tr className="table-info">
                                 <td>
@@ -166,7 +168,7 @@ const Todos = () => {
                                 <td>عملیات</td>
                             </tr>
                         </thead>
-                        <tbody className="table-group-divider">
+                        <tbody id="table-content" className="table-group-divider">
                             {todos.map(t => (
                                 <tr key={t.id}>
                                     <td>

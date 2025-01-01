@@ -26,7 +26,9 @@ const Gallery = () => {
         apAxiosV2.get('/gallery').then(res => {
             setGallery(res.data)
             setMainGallery(res.data)
-            gsap.to('#gallery_table', { opacity: 1 })
+            gsap.timeline()
+                .to('#gallery_table', { x: 0 })
+                .from('#table-content', { opacity: 0 }, "+=0.4")
         })
     }, [])
     const handleSearchGallery = (e) => {
@@ -77,14 +79,14 @@ const Gallery = () => {
                         <Link to={'/gallery/add'} className="btn btn-success">
                             <span className="d-flex align-items-center gap-2">
                                 <i className="btn_plus_icon fas fa-plus text-light"></i>
-                                اضافه کردن عکس جدید
+                                <span className="text-add">اضافه کردن عکس جدید</span>
                             </span>
                         </Link>
                     </div>
                 </div>
             </div>
             {gallery.length ? (
-                <table id="gallery_table" className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4" style={{ opacity: 0 }}>
+                <table id="gallery_table" className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4" style={{ transform: 'translateX(4500px)' }}>
                     <thead>
                         <tr className="table-info">
                             <td>#</td>
@@ -94,7 +96,7 @@ const Gallery = () => {
                             <td>عملیات</td>
                         </tr>
                     </thead>
-                    <tbody className="table-group-divider">
+                    <tbody id="table-content" className="table-group-divider">
                         {gallery.map(g => (
                             <tr key={g.id} className="td_gallery">
                                 <td>{g.id}</td>

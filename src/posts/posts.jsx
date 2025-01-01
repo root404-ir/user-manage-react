@@ -31,7 +31,9 @@ const Posts = () => {
         apAxios.get('/api/v1/posts').then(res => {
             setPosts(res.data)
             setMainPosts(res.data)
-            gsap.to('#post_table', { opacity: 1 })
+            gsap.timeline()
+                .to('#post_table', { x: 0 })
+                .from('#table-content', { opacity: 0 }, "+=0.4")
         })
     }, [])
 
@@ -186,7 +188,7 @@ const Posts = () => {
                         <Link to={'/posts/add'} className="btn btn-success">
                             <span className="d-flex align-items-center gap-2">
                                 <i className="btn_plus_icon fas fa-plus text-light"></i>
-                                اضافه کردن پست جدید
+                                <span className="text-add">اضافه کردن پست جدید</span>
                             </span>
                         </Link>
                     </div>
@@ -207,7 +209,7 @@ const Posts = () => {
 
             {
                 posts.length ? (
-                    <table id="post_table" className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4" style={{ opacity: 0 }}>
+                    <table id="post_table" className="table table-striped bg-light shadow overflow-hidden rounded-3 mt-4" style={{ transform: 'translateX(4500px)' }}>
                         <thead>
                             <tr className="table-info">
                                 <td>
@@ -224,7 +226,7 @@ const Posts = () => {
                                 <td>عملیات</td>
                             </tr>
                         </thead>
-                        <tbody className="table-group-divider">
+                        <tbody id="table-content" className="table-group-divider">
                             {posts.map(p => (
                                 <tr key={p.id}>
                                     <td>
