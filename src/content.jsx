@@ -15,6 +15,7 @@ import { LoadingProvider } from "./contexts/loadingContext";
 import DarkLight from "./DarkMode/dark-light";
 import { useSidebar } from "./contexts/sidebarContext";
 import AddComment from "./posts/addComment";
+import AddPost2 from "./posts/addPost2";
 const Content = () => {
     const { activeMenu, setActiveMenu } = useContext(MainContext)
     const { SideClose, isSideClose } = useSidebar()

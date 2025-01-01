@@ -6,7 +6,6 @@ const DarkLight = () => {
         const saveMode = localStorage.getItem('themeMode') || 'system'
         setMode(saveMode)
     }, [])
-
     useEffect(() => {
         localStorage.setItem('themeMode', mode)
         const applyTheme = (theme) => {
@@ -14,7 +13,7 @@ const DarkLight = () => {
             if (theme === 'dark') {
                 document.body.classList.add('dark-bg', 'text-light')
             } else if (theme === 'light') {
-                document.body.classList.add('light-bg', 'text-dark');
+                document.body.classList.add('light-bg', 'text-black')
             }
         }
         if (mode === 'system') {

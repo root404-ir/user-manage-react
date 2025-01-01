@@ -5,14 +5,13 @@ const PersianDate = () => {
     useEffect(() => {
         axios.get('https://api.keybit.ir/time/').then(res => {
             setDate(res.data)
-            console.log(res.data)
         })
 
     }, [])
     return (
         <div>
             {date ? (
-                <div className='date text_shdow d-flex justify-content-center gap-2'>
+                <div id='jeded' className='date text_shdow d-flex justify-content-center gap-2'>
                     <span>تاریخ امروز : </span>
                     <span>{date.date?.full?.official?.iso?.fa}</span>
                 </div>
