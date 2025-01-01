@@ -23,6 +23,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
 }
+
 a:hover {
     cursor: url('./assets/icons8-hand-cursor-48\ \(1\).png'), auto;
 }
@@ -189,5 +190,11 @@ h4 {
 
     .menu_button {
         display: inline !important;
+    }
+}
+
+@media (max-width:999px) {
+    .text-add {
+        display: none;
     }
 }
