@@ -8,6 +8,9 @@ import { FaPlus } from "react-icons/fa";
 import InfoSoundTask from "../assets/sounds/info.mp3"
 import DeleteSoundTask from "../assets/sounds/swoosh-sound-effect-for-fight-scenes-or-transitions-2-149890.mp3"
 import { MdOutlineAutoFixHigh } from "react-icons/md";
+import { FaCheck } from "react-icons/fa";
+import { MdOutlineClose } from "react-icons/md";
+
 import gsap from "gsap";
 const Todos = () => {
     const [todos, setTodos] = useState([])
@@ -183,10 +186,9 @@ const Todos = () => {
                                         {t.isDone ? 'انجام شده' : 'انجام نشده'}
                                     </span></td>
                                     <td>
-                                        <i
-                                            className={`${t.isDone ? 'fa fa-close text-warning' : 'fa fa-check text-success'} mx-2 pointer`}
-                                            title={`${t.isDone ? 'از حالت انجام شده خارج کن' : 'انجام دادم'}`}
-                                            onClick={() => handleDoneTask(t.id)} ></i>
+                                        <span onClick={() => handleDoneTask(t.id)} className="mx-2">
+                                            {t.isDone ? <MdOutlineClose className="text-warning" /> : <FaCheck className="text-success" />}
+                                        </span>
                                         <FaEdit className=" text-warning mx-2 pointer" title="ویرایش" onClick={() => navigate(`/todos/add/${t.id}`)} />
                                         <IoTrashBin className="text-danger mx-2 pointer" title="حذف" onClick={() => handleDeleteTask(t.id)} />
                                     </td>
