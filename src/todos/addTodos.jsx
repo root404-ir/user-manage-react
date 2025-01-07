@@ -28,7 +28,8 @@ const AddTodos = () => {
     const [loading, setLoading] = useState(true)
     const { buttonLoading, startLoading, stopLoading } = useLoading()
     const [taskData, setTaskData] = useState({
-        title: ''
+        title: '',
+        isDone: false
     })
     const handleAddTask = async (e) => {
         e.preventDefault()

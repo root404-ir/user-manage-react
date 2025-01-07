@@ -21,6 +21,7 @@ const Todos = () => {
     const InfoSoundRef = useRef(new Audio(InfoSoundTask))
     const [selectedItems, setSelectedItems] = useState([])
     const [operation, setOperation] = useState('')
+    const [filter, setFilter] = useState('all')
     const DeleteSound = () => {
         DeleteSoundRef.current.play()
     }
@@ -28,14 +29,20 @@ const Todos = () => {
         InfoSoundRef.current.play()
     }
     useEffect(() => {
-        apAxiosV2.get('/tasks',).then(res => {
-            setTodos(res.data)
-            setMainTodos(res.data)
+        let url = '/tasks';
+        if (filter === "completed") {
+            url += '?isDone=true';
+        } else if (filter === "incomplete") {
+            url += '?isDone=false';
+        }
+        apAxiosV2.get(url).then((res) => {
+            setTodos(res.data);
             gsap.timeline()
                 .to('#todo_table', { x: 0 })
                 .from('#table-content', { opacity: 0 }, "+=0.4")
-        })
-    }, [])
+        });
+    }, [filter]);
+
     const handleSelectItems = (id) => {
         setSelectedItems(prev =>
             prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
@@ -86,9 +93,12 @@ const Todos = () => {
     }
     const handleDoneTask = (taskId) => {
         const index = todos.findIndex(t => t.id === taskId)
-        let newTaskItem = [...todos]
-        newTaskItem[index].isDone = !newTaskItem[index].isDone
-        setTodos(newTaskItem)
+        const updatedTasks = { ...todos[index], isDone: !todos[index].isDone }
+        apAxiosV2.put(`/tasks/${taskId}`, updatedTasks).then(res => {
+            const updatedTasks = [...todos]
+            updatedTasks[index] = res.data
+            setTodos(updatedTasks)
+        })
     }
     const handleDeleteTask = (taskId) => {
         InfoSound()
@@ -151,6 +161,12 @@ const Todos = () => {
                     <option value="">انتخاب عملیات</option>
                     <option value="delete">حذف</option>
                 </select>
+                <select onChange={(e) => setFilter(e.target.value)}>
+                    <option>فیلتر بر اساس</option>
+                    <option value="all">همه</option>
+                    <option value="completed">انجام شده ها</option>
+                    <option value="incomplete">انجام نشده ها</option>
+                </select>
                 <button className="btn btn-danger d-flex align-items-center gap-1"
                     onClick={() => handleGroupAction('delete')}
                 >
@@ -209,3 +225,36 @@ const Todos = () => {
     )
 }
 export default Todos
+
+
+
+
+// let url = '/tasks'
+// if (filter === 'completed') {
+//     url += '?isDone=true'
+// } else if (filter === 'incomplete') {
+//     url += '?isDone=false'
+// }
+// apAxiosV2.get(url).then(res => {
+//     setTodos(res.data)
+//     setMainTodos(res.data)
+//     gsap.timeline()
+//         .to('#todo_table', { x: 0 })
+//         .from('#table-content', { opacity: 0 }, "+=0.4")
+// })
+
+
+
+// useEffect(() => {
+//     axios.get('https://example.com/api/todos').then((res) => {
+//         let filteredTodos = res.data;
+//         if (filter === "completed") {
+//             filteredTodos = filteredTodos.filter(todo => todo.isDone === true);
+//         } else if (filter === "incomplete") {
+//             filteredTodos = filteredTodos.filter(todo => todo.isDone === false);
+//         }
+//         setTodos(filteredTodos);
+//     }).catch((err) => {
+//         console.error("Error fetching todos:", err);
+//     });
+// }, [filter]);
