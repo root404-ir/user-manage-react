@@ -10,6 +10,7 @@ import DeleteSoundTask from "../assets/sounds/swoosh-sound-effect-for-fight-scen
 import { MdOutlineAutoFixHigh } from "react-icons/md";
 import { FaCheck } from "react-icons/fa";
 import { MdOutlineClose } from "react-icons/md";
+import './todo.css'
 
 import gsap from "gsap";
 const Todos = () => {
@@ -181,7 +182,7 @@ const Todos = () => {
                                         />
                                     </td>
                                     <td>{t.id}</td>
-                                    <td>{t.title}</td>
+                                    <td className={`${t.isDone ? 'completed' : ''}`}>{t.title}</td>
                                     <td><span className={`${t.isDone ? 'bg-success' : 'bg-danger'} py-0 px-2 text-white rounded-5`}>
                                         {t.isDone ? 'انجام شده' : 'انجام نشده'}
                                     </span></td>
