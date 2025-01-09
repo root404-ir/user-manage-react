@@ -7,6 +7,7 @@ import './titleAnimate.css'
 import { FaEdit } from "react-icons/fa";
 import { IoTrashBin } from "react-icons/io5";
 import { Alert, Confirm } from "../utils/Salert";
+import ParticleBackground from "../Particle";
 const Users = () => {
     const navigate = useNavigate()
     const [user, setUser] = useState([])

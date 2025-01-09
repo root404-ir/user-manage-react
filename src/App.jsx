@@ -5,7 +5,7 @@ import Sidebar from "./Sidebar";
 import { BrowserRouter } from "react-router-dom";
 import PersianDate from "./date/persianDate";
 import { SidebarProvider } from "./contexts/sidebarContext";
-
+import ParticleBackground from "./Particle";
 function App() {
     const [activeMenu, setActiveMenu] = useState(false)
 

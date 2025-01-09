@@ -161,7 +161,7 @@ const Todos = () => {
                     <option value="">انتخاب عملیات</option>
                     <option value="delete">حذف</option>
                 </select>
-                <select onChange={(e) => setFilter(e.target.value)}>
+                <select className="form-select w-auto" onChange={(e) => setFilter(e.target.value)}>
                     <option>فیلتر بر اساس</option>
                     <option value="all">همه</option>
                     <option value="completed">انجام شده ها</option>
