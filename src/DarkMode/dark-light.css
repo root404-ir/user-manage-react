@@ -1,5 +1,10 @@
 body.dark-bg {
-    background-image: url('../assets/image.jpg');
+    background-image: url('../assets/wp12260565-4k-pc-dark-wallpapers.jpg');
+    background-position: 10% 90%;
+}
+
+body.light-bg {
+    background-color: skyblue;
 }
 
 .darkMode-Container {

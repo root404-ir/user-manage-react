@@ -1,48 +1,59 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 import './dark-light.css';
+import { LuLightbulb } from "react-icons/lu";
+import { LuLightbulbOff } from "react-icons/lu";
+import lightSwitchSound from '../assets/sounds/light-switch-flip-272436.mp3'
+
+
 const DarkLight = () => {
-    const [mode, setMode] = useState('system')
-    useEffect(() => {
-        const saveMode = localStorage.getItem('themeMode') || 'system'
-        setMode(saveMode)
-    }, [])
-    useEffect(() => {
-        localStorage.setItem('themeMode', mode)
-        const applyTheme = (theme) => {
-            document.body.classList.remove('dark-bg', 'text-light', 'light-bg', 'text-dark')
-            if (theme === 'dark') {
-                document.body.classList.add('dark-bg', 'text-light')
-            } else if (theme === 'light') {
-                document.body.classList.add('light-bg', 'text-black')
-            }
-        }
-        if (mode === 'system') {
-            const prefersDark = window.matchMedia('(prefers-color-scheme:dark)')
-            applyTheme(prefersDark.matches ? 'dark' : 'light')
+    const iconStyle = {
+        fontSize: '2.5rem',
+    };
 
-            const handleSystemChange = (e) => {
-                applyTheme(e.matches ? 'dark' : 'light')
-            }
-            prefersDark.addEventListener('change', handleSystemChange)
+    const [darkMode, setDarkMode] = useState(() => {
+        return localStorage.getItem("darkMode") === "true"
+    })
 
-            return () => prefersDark.removeEventListener('change', handleSystemChange)
+    const lightSound = useRef(new Audio(lightSwitchSound))
+
+    const handleDarkMode = () => {
+        const newMode = !darkMode
+        setDarkMode(newMode)
+        localStorage.setItem("darkMode", newMode)
+
+        if (newMode) {
+            document.body.classList.add('dark-bg', 'text-light')
+            document.body.classList.remove('light-bg', 'text-dark')
         } else {
-            applyTheme(mode)
+            document.body.classList.add('light-bg', 'text-dark')
+            document.body.classList.remove('dark-bg', 'text-light')
         }
-    }, [mode])
-    const handleChange = (e) => {
-        setMode(e.target.value)
+        if(lightSound.current)
+        {
+            lightSound.current.play()
+        }
     }
+
+    useEffect(() => {
+        if (darkMode) {
+            document.body.classList.add('dark-bg', 'text-light')
+            document.body.classList.remove('light-bg', 'text-dark')
+        } else {
+            document.body.classList.add('light-bg', 'text-dark')
+            document.body.classList.remove('dark-bg', 'text-light')
+        }
+    }, [darkMode])
+
+
     return (
         <div className="darkMode-Container">
             <div className="container-fluid">
-                <select className="form-select mt-2" onChange={handleChange} value={mode}>
-                    <option value="dark">حالت تاریک</option>
-                    <option value="light">حالت روشن</option>
-                    <option value="system">سیستم</option>
-                </select>
+                <span className="pointer" onClick={handleDarkMode}>
+                    {darkMode ? <LuLightbulb style={iconStyle} /> : <LuLightbulbOff style={iconStyle} />}
+                </span>
             </div>
-        </div >
-    )
-}
-export default DarkLight
+        </div>
+    );
+};
+
+export default DarkLight;
